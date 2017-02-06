@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Star Wars: The Game</title>
+  <!-- Bootstrap File -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+<body>
+  <!-- Overall Bootstrap Grid -->
+  <div class="container wrapper">
+    <!-- Jumbotron with Title -->
+    <div class="jumbotron jumbo-top">
+      <h1 class="text-center"><strong>Star Wars: The Game!</strong></h1>
+      <h4 class="text-center">Rated B: for Bootcamp</h4>
+      <hr>
+    
+    </div>
+    <div class="row">
+   
+
+         <!-- Left Panel -->
+      <div class="col-lg-12 match">
+        <!-- Controls (Superpower Grow/Shrink)-->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Match Up</h3>
+          </div>
+          <div class="panel-body">
+            <div class="text-center">
+
+            
+           <div id="match-up"></div>
+           <span id="results"></span>
+            
+          
+            </div>
+          </div>
+        </div>
+        <!-- Controls (Superpower Visibility) -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><span id="panel-label"> Choose Your Fighter</span></h3>
+          </div>
+          <div class="panel-body">
+           <div class="text-center">
+
+             <div id="yourChr"></div>
+            </div>
+        </div>
+        </div>
+        <!-- Controls (Stretch) -->
+        
+        <!-- Controls (Superpower Move Controls) -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Fight</h3>
+          </div>
+          <div class="panel-body">
+            <div class="text-center">
+              
+            <div class="text-center">
+              <button class="btn btn-default btn-lg attack"><span ></span> Attack</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+     
+      
+
+
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+<script>
+
+var playerId ="";
+var oppId = "";
+var upNext ="0123";
+var upNextFirst = "";
+var upNextSecond = "";
+var playerForce = 0;
+var oppForce = 0;
+var playerDamage = 0;
+var oppDamage = 0;
+
+var starWars = {
+
+chrNames: ["CP3O", "VADER", "LUKE", "DARTH MAUL"],
+lifeForce: [100,120,150,180],
+damage: [5,15,10,25]
+    
+
+}
+
+
+
+
+
+
+
+
+function setStage() {
+
+  for (i=0; i<4; i++) {
+
+  actor = $("<div>");
+
+  actor.html("<button type='button' id='chr" + i + "' class='chr'><img src='assets/images/chr" + i + ".png' class='characters' id='chr" + i + "'><br>" + starWars.chrNames[i] + "<br><span id='lf"+ i +"'>" + starWars.lifeForce[i] + "</span></button>");
+
+
+      $("#yourChr").append(actor);
+
+   
+  }
+}
+
+setStage();
+
+$(".attack").prop("disabled",true);
+
+
+
+
+
+
+    // Javascript function that wraps everything
+
+
+
+
+    $(document).ready(function() {
+
+      
+  $(".chr").on("click", function() {
+
+    if (playerId === "") {
+
+    playerId = $(this).attr("id"); // player Id
+
+    console.log(playerId);
+
+    playerId = playerId.replace("chr", "");
+
+    playerId = parseInt(playerId, 10);
+
+    playerDamage = starWars.damage[playerId];
+    playerForce = starWars.lifeForce[playerId];
+
+    console.log(playerDamage);
+
+   
+
+   $("#chr"+playerId).prop("disabled",true);
+
+   $("#match-up").append($(this));
+
+   $("#panel-label").text(" Choose Your Villan");
+
+  } 
+
+
+
+    else {
+
+  oppId = $(this).attr("id"); // player Id
+
+oppId = oppId.replace("chr", "");
+
+oppId = parseInt(oppId, 10);
+
+oppDamage = starWars.damage[oppId];
+oppForce = starWars.lifeForce[oppId];
+
+   $("#match-up").append("<h1 class='vs'>  - VS -  </h1>");
+
+
+   $("#chr"+oppId).prop("disabled",true);
+
+   $("#match-up").append($(this));
+
+   $("#match-up").append("<span class='vs'>         </span>");
+
+   
+
+   $("#panel-label").text(" Next Up");
+
+
+   upNext = upNext.replace(playerId, "");
+   upNext = upNext.replace(oppId, "");
+
+  upNextFirst = upNext.substr(0,1);
+  upNextSecond = upNext.substr(1,1);
+
+  $("#chr"+upNextFirst).prop("disabled",true);
+  $("#chr"+upNextSecond).prop("disabled",true);
+  $(".attack").prop("disabled",false);
+   
+       }
+      
+    });
+     
+ 
+  $(".attack").on("click", function() {
+
+
+
+
+playerForce = playerForce - oppDamage;
+oppForce = oppForce - playerDamage;
+    
+        
+    if (playerForce > 0) {
+
+
+     $("#results").html("<p class='panel-title panmsg'> You attacked " + starWars.chrNames[oppId] + " for " + playerDamage + " damage.<br>" + starWars.chrNames[oppId] + " attacked you back for " + oppDamage + " damage.</p>");
+
+
+
+playerDamage = playerDamage * 2;
+
+}
+
+else {
+
+  $("#results").html("<h1>You Lost");
+
+  $(".attack").prop("disabled",true);
+
+
+  oppForce = oppForce + playerDamage;
+
+  
+}
+
+if (oppForce < 0) {
+
+ $("#results").html("<h1>You Win");
+}
+
+$("#lf"+playerId).text(playerForce);
+      $("#lf"+oppId).text(oppForce);
+
+      
+
+   
+   if ($(".attack").prop("disabled")) {
+
+    $(".attack").text("Start Over");
+
+    $(".attack").prop("disabled",false);
+
+   }   
+
+
+     
+});
+     
+
+
+
+ 
+
+});
+
+
+
+   
+  
+  </script>
+</body>
+</html>
