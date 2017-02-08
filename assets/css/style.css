@@ -6,7 +6,7 @@ margin-top: 30px;
 
 .jumbo-top {
 	
-background: ('assets/images/bg.jpg');
+
 
 }
 
@@ -17,8 +17,13 @@ background: ('assets/images/bg.jpg');
 
 }
 
+#champion {
+
+
+}
+
 .chr {
-	float:left;
+	float: left;
 	border: 1px solid #ddd;
 	width: 125px;
 	height: 180px;
@@ -28,12 +33,16 @@ background: ('assets/images/bg.jpg');
 
 }
 
+
+
 .panmsg {
-	float:left;
+
+	
+	width: 200px;
 	border: 1px solid #ddd;
 	width: 450px;
 	
-	margin-left: 5px;
+	
 	border-radius: 4px;
 	background: #eee;
 	padding-top: 10px;
@@ -46,29 +55,19 @@ background: ('assets/images/bg.jpg');
 	margin-top: 58px;
 }
 
-.opp {
-	visibility: hidden;
-	float:left;
-	border: 1px solid #ddd;
-	width: 125px;
-	height: 180px;
-	margin-left: 5px;
-	border-radius: 4px;
-	background: #eee;
+
+#panel-champ {
+	width: 200px;
+	margin-top: -10px;
+	margin-left: 15px;
+	float: left;
 }
 
-#match {
 
+
+#panel-defender {
+	width: 200px;
+	margin-top: -10px;
+	margin-right: 62px;
 	float: right;
-}
-
-.vs {
-float:left;
-	
-	width: 125px;
-	height: 180px;
-	margin-left: 5px;
-	border-radius: 4px;
-	
-
 }
