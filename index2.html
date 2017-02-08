@@ -8,11 +8,9 @@
 
   <link rel="stylesheet" href="assets/css/style.css">
   <!-- JQuery -->
-  
+  <script src="https://code.jquery.com/jquery.js"></script>
 
 </head>
-
-<script src="https://code.jquery.com/jquery.js"></script>
 <body>
   <!-- Overall Bootstrap Grid -->
   <div class="container wrapper">
@@ -102,10 +100,81 @@ var starWars = {
 
 chrNames: ["CP3O", "VADER", "LUKE", "DARTH MAUL"],
 lifeForce: [100,120,150,180],
-damage: [5,15,10,25]
+damage: [5,15,10,25],
+
+chrSelect: function(e) {
+
+                            if (playerId === "") {
+
+                              playerId = $(e.currentTarget).attr("id"); // player Id
+
+                              console.log(playerId);
+
+                              playerId = playerId.replace("chr", "");
+
+                              playerId = parseInt(playerId, 10);
+
+                              playerDamage = starWars.damage[playerId];
+                              playerForce = starWars.lifeForce[playerId];
+
+                              console.log(playerDamage);
+
+
+
+                              $("#chr"+playerId).prop("disabled",true);
+
+                              $("#match-up").append($(this));
+
+                              $("#panel-label").text(" Choose Your Villan");
+
+                            }
+
+
+
+  else {
+
+                              oppId = $(this).attr("id"); // player Id
+
+                              oppId = oppId.replace("chr", "");
+
+                              oppId = parseInt(oppId, 10);
+
+                              oppDamage = starWars.damage[oppId];
+                              oppForce = starWars.lifeForce[oppId];
+
+                              $("#match-up").append("<h1 class='vs'>  - VS -  </h1>");
+
+
+                              $("#chr"+oppId).prop("disabled",true);
+
+                              $("#match-up").append($(this));
+
+                              $("#match-up").append("<span class='vs'>         </span>");
+
+
+
+                              $("#panel-label").text(" Next Up");
+
+
+                              upNext = upNext.replace(playerId, "");
+                              upNext = upNext.replace(oppId, "");
+
+                              upNextFirst = upNext.substr(0,1);
+                            upNextSecond = upNext.substr(1,1);
+
+                            $("#chr"+upNextFirst).prop("disabled",true);
+                            $("#chr"+upNextSecond).prop("disabled",true);
+                            $(".attack").prop("disabled",false);
+  
+  }
+}
+
+};
+
+
     
 
-}
+
 
 
 
@@ -124,31 +193,10 @@ function setStage() {
 
 
       $("#yourChr").append(actor);
-
-   
-  }
 }
-
-function clearStage() {
-
-  for (i=0; i<4; i++) {
-
-  $("#chr"+i).remove();
-
    
-  }
-    playerId ="";
-    oppId = "";
-    upNext ="0123";
-    upNextFirst = "";
-    upNextSecond = "";
-    playerForce = 0;
-    oppForce = 0;
-    playerDamage = 0;
-    oppDamage = 0;
+  };
 
-  $("#results").remove();
-}
 
 setStage();
 
@@ -167,73 +215,13 @@ $(".attack").prop("disabled",true);
     $(document).ready(function() {
 
       
-  $(".chr").on("click", function() {
+  $(".chr").on("click", function(event) {
 
-    if (playerId === "") {
+    var data = 0;
 
-    playerId = $(this).attr("id"); // player Id
-
-    console.log(playerId);
-
-    playerId = playerId.replace("chr", "");
-
-    playerId = parseInt(playerId, 10);
-
-    playerDamage = starWars.damage[playerId];
-    playerForce = starWars.lifeForce[playerId];
-
-    console.log(playerDamage);
-
+    starWars.chrSelect(event);
    
-
-   $("#chr"+playerId).prop("disabled",true);
-
-   $("#match-up").append($(this));
-
-   $("#panel-label").text(" Choose Your Villan");
-
-  } 
-
-
-
-    else {
-
-            oppId = $(this).attr("id"); // player Id
-
-            oppId = oppId.replace("chr", "");
-
-            oppId = parseInt(oppId, 10);
-
-            oppDamage = starWars.damage[oppId];
-            oppForce = starWars.lifeForce[oppId];
-
-                     $("#match-up").append("<h1 class='vs'>  - VS -  </h1>");
-
-
-                     $("#chr"+oppId).prop("disabled",true);
-
-                     $("#match-up").append($(this));
-
-                     $("#match-up").append("<span class='vs'>         </span>");
-
-                     
-
-                     $("#panel-label").text(" Next Up");
-
-
-           upNext = upNext.replace(playerId, "");
-           upNext = upNext.replace(oppId, "");
-
-          upNextFirst = upNext.substr(0,1);
-          upNextSecond = upNext.substr(1,1);
-
-          $("#chr"+upNextFirst).prop("disabled",true);
-          $("#chr"+upNextSecond).prop("disabled",true);
-          $(".attack").prop("disabled",false);
-           
-        //$(".attack") != null
-
-       }
+       
       
     });
      
@@ -247,7 +235,7 @@ playerForce = playerForce - oppDamage;
 oppForce = oppForce - playerDamage;
     
         
-    if ((playerForce > 0) && (oppForce > 0)) {
+    if (playerForce > 0) {
 
 
      $("#results").html("<p class='panel-title panmsg'> You attacked " + starWars.chrNames[oppId] + " for " + playerDamage + " damage.<br>" + starWars.chrNames[oppId] + " attacked you back for " + oppDamage + " damage.</p>");
@@ -258,17 +246,14 @@ playerDamage = playerDamage * 2;
 
 }
 
-if (playerForce < 1) {
+else {
 
   $("#results").html("<h1>You Lost");
 
   $(".attack").prop("disabled",true);
 
-  $("#chr"+playerId).css("background","red");
 
-  //clearStage();
-
-  //setStage();
+  oppForce = oppForce + playerDamage;
 
   
 }
