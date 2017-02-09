@@ -121,6 +121,9 @@ var starWars = {
             $("#defender").children().eq(0).data("alive", false);
             $("#defender").children().eq(0).prop("disabled", true);
 
+            $("#defender").children().detach().prependTo("#lostChar");
+            $("#lostChar").children().hide();
+
             if ($("#yourChr").children().size() > 0) {
 
                 $(".attack").data("action", "next");
